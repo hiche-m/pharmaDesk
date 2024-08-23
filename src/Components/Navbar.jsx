@@ -1,6 +1,6 @@
 import React from "react";
-import home_full from "../Assets/home_filled.svg"
-import home_outline from "../Assets/home_outline.svg"
+import home_full from "../Assets/SVG/home_filled.svg"
+import home_outline from "../Assets/SVG/home_outline.svg"
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
