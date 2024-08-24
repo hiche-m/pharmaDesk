@@ -11,7 +11,7 @@ const IncomePerPost = ({ className = "" }) => {
                 <span className="flex flex-row grow row-span-1 font-medium items-center">Meilleures Postes</span>
                 <span className="flex flex-row grow row-span-1 text-sm justify-end items-center">
                     <span className="text-selectionBG">Pour</span>
-                    <span className="px-1">Août 2019</span>
+                    <span className="px-1 text-xs">Août 2019</span>
                     <AiFillCaretDown size="0.5rem" />
                 </span>
             </div>
