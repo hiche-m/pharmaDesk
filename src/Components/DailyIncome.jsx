@@ -2,10 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { calcPercentage, drawCircle, drawLine, formatNumberWithComma } from "../Utils/Functions.jsx";
 
-const DailyIncome = ({ className = "" }) => {
+const DailyIncome = ({ className = "", values = [8000, 10100, 7000], dotWidth = 5 }) => {
     const canvasRef = useRef(null);
-    const dotWidth = 5;
-    const values = [8000, 10100, 7000];
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -45,7 +43,7 @@ const DailyIncome = ({ className = "" }) => {
 
     return (<div className={`${className} bg-superClear rounded-xl shadow-md p-2 flex flex-col`}>
         <div className="flex flex-row h-max">
-            <span className="flex flex-row grow text-sm items-center justify-start">Profits quotidiens</span>
+            <span className="flex flex-row grow text-sm items-center justify-start font-medium">Profits quotidiens</span>
             <span className="flex flex-row grow row-span-1 text-xs justify-end items-center">
                 <span className="px-1">Novembre</span>
                 <AiFillCaretDown size="0.5rem" />
