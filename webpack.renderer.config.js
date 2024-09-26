@@ -18,6 +18,15 @@ rules.push({
 
 module.exports = {
   // Put your normal webpack config below here
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3050',  // Backend server URL
+        secure: false,                    // If using https, set this to true
+        changeOrigin: true,               // Needed for virtual hosted sites
+      },
+    },
+  },
   module: {
     rules,
   },

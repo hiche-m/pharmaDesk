@@ -2,6 +2,7 @@ import React from "react";
 import home_full from "../Assets/SVG/home_filled.svg"
 import home_outline from "../Assets/SVG/home_outline.svg"
 import { Link, useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar.jsx";
 
 const Navbar = () => {
     const location = useLocation()
@@ -11,7 +12,9 @@ const Navbar = () => {
         <Link to={location.pathname === '/stock' ? undefined : '/stock'}><span className="hover:text-gray-400 cursor-pointer">Stock</span></Link>
         <span className="hover:text-gray-400 cursor-pointer">Découvrir</span>
         <span className="hover:text-gray-400 cursor-pointer">Paramètres</span>
-        <span>Rechercher</span>
+        <span className="w-max">
+            <SearchBar />
+        </span>
     </div>);
 }
 

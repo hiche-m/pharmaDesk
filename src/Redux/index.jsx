@@ -1,2 +1,3 @@
-export { getUser } from "./User/userActions.jsx";
-export { getNotification } from "./Notifications/notificationActions.jsx";
+export { default as store } from "./store.jsx";
+export * from "./notificationActions.jsx";
+export * from "./userActions.jsx";
