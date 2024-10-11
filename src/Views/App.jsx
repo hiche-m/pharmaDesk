@@ -12,7 +12,7 @@ export default function App() {
             <Helmet>
                 <meta
                     http-equiv="Content-Security-Policy"
-                    content="default-src 'self'; connect-src 'self' http://localhost:3050; img-src 'self' http://res.cloudinary.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+                    content="default-src 'self'; connect-src 'self' https://pharma-back.onrender.com; img-src 'self' http://res.cloudinary.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
                 />
             </Helmet>
             <Routes>

@@ -10,7 +10,10 @@ import useFetch from "../Services/UseFetch.jsx";
 import { refresh_rate } from "../Utils/Parameters.jsx";
 import Modal from "../Components/NotificationModal.jsx";
 import useConfirmRequest from "../Services/useConfirmRequest.jsx";
+import useRefuseRequest from "../Services/useRefuseRequest.jsx";
 import { useSelector } from "react-redux";
+import useConfirmTransaction from "../Services/useConfirmTransaction.jsx";
+import useFetchConfirmed from "../Services/useFetchConfirmed.jsx";
 
 const Home = () => {
 
@@ -20,7 +23,11 @@ const Home = () => {
 
     useFetch(refresh);
 
-    const { confirmRequest, success, isRequestLoading, hasError } = useConfirmRequest();
+    useFetchConfirmed(refresh);
+
+    const /* { confirmRequest, success, isRequestLoading, hasError } */ confirmRequestObject = useConfirmRequest();
+    const /* { confirmRequest, success, isRequestLoading, hasError } */ confirmTransactionObject = useConfirmTransaction();
+    const /* { refuseRequest, rsuccess, isRRequestLoading, rHasError } */ refuseRequestObject = useRefuseRequest();
 
     const { isLoading, data, error } = useSelector(state => state.user);
 
@@ -46,17 +53,34 @@ const Home = () => {
         setModalOpen(false);
     };
 
-    const handleRefuse = () => {
-        alert('Refused');
+    const handleRefuse = async (nid) => {
+        await refuseRequestObject.refuseRequest(nid);
+        if (refuseRequestObject.rsuccess) {
+            alert("Request refused.");
+            setRefresh(previous => previous + 1);
+        } else if (refuseRequestObject.rHasError) {
+            alert("An error has occured: " + refuseRequestObject.rHasError);
+        }
         setModalOpen(false);
     };
 
-    const handleAccept = async (pid) => {
-        await confirmRequest(data.idpharma, pid);
-        if (success) {
+    const handleAccept = async (pid, clientId) => {
+        await confirmRequestObject.confirmRequest(data.idpharma, pid, clientId);
+        if (confirmRequestObject.success) {
             alert("Request accepted.");
             setRefresh(previous => previous + 1);
-        } else if (hasError) {
+        } else if (confirmRequestObject.hasError) {
+            alert("An error has occured: " + hasError);
+        }
+        setModalOpen(false);
+    };
+
+    const handleConfirm = async (pid) => {
+        await confirmTransactionObject.confirmTransaction(data.idpharma, pid);
+        if (confirmTransactionObject.success) {
+            alert("Request accepted.");
+            setRefresh(previous => previous + 1);
+        } else if (confirmTransactionObject.hasError) {
             alert("An error has occured: " + hasError);
         }
         setModalOpen(false);
@@ -69,7 +93,7 @@ const Home = () => {
 
     return (<>
         <div className="col-span-3 row-span-2 bg-lightShapes">
-            <SideContent handleRefresh={handleRefresh} openNotification={openNotification} loading={isRequestLoading} />
+            <SideContent userData={data} handleRefresh={handleRefresh} openNotification={openNotification} loading={confirmRequestObject.isRequestLoading || confirmTransactionObject.isRequestLoading} />
         </div>
         <div className="col-span-9 col-start-1 row-start-2 flex bg-background h-auto">
             <div className="w-max">
@@ -90,6 +114,7 @@ const Home = () => {
             onClose={handleCloseModal}
             onRefuse={handleRefuse}
             onAccept={handleAccept}
+            onConfirm={handleConfirm}
             selectedNotification={selectedNot}
         />
     </>

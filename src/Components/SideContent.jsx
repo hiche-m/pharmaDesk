@@ -6,16 +6,17 @@ import NotificationTile from "./NotificationTile.jsx";
 import { useSelector } from "react-redux";
 import NotifictionsSkeleton from "../Skeletons/notifications_skeleton.jsx";
 
-const SideContent = ({ handleRefresh = () => { }, acivity = recentActivity, openNotification = (notification_data) => { }, loading = false }) => {
+const SideContent = ({ userData, handleRefresh = () => { }, acivity = recentActivity, openNotification = (notification_data) => { }, loading = false }) => {
 
-    const { isLoading, data, error, index } = useSelector(state => state.notifications);
+    const /* { isLoading, data, error, index } */notifObject = useSelector(state => state.notifications);
+    const /* { isLoading, data, error, index } */confirmedNotifObject = useSelector(state => state.confirmedNotifications);
 
     return (
         <>
             <div className="w-full h-full min-w-[215px] bg-lightShapes flex flex-col grow space-y-5 p-2 overflow-y-auto overflow-x-auto">
                 <div className="self-end flex flex-row items-center">
                     <div className="flex flex-col items-end p-4">
-                        <div className="text-sm font-medium text-textPrimary">Creamy Hudson</div>
+                        <div className="text-sm font-medium text-textPrimary">{userData.nameOwner}</div>
                         <div className="text-xs text-textSecoundary">Administrateur</div>
                     </div>
                     <img src={pfp4} className="h-8 w-8 rounded-full" />
@@ -29,14 +30,23 @@ const SideContent = ({ handleRefresh = () => { }, acivity = recentActivity, open
                         }
                     )}
                 </div>
-                <div className="flex flex-col space-y-2">
-                    <div className="inline-flex grow mb-2 justify-between items-center">
-                        <span className="font-medium">Commandes</span>
-                        {!isLoading && (<span className="text-sm ml-2 text-textSecoundary cursor-pointer" onClick={() => handleRefresh()}>Refresh</span>)}
-                        {isLoading && (<span className="text-sm ml-2 text-disabled">Refresh</span>)}
+                <div className="flex flex-col">
+                    <div className="h-1/2 w-full space-y-2 pb-5">
+                        <div className="inline-flex grow mb-2 justify-between items-center ">
+                            <span className="font-medium">Commandes</span>
+                            {!(notifObject.isLoading || confirmedNotifObject.isLoading) && (<span className="text-sm ml-2 text-textSecoundary cursor-pointer" onClick={() => handleRefresh()}>Refresh</span>)}
+                            {(notifObject.isLoading || confirmedNotifObject.isLoading) && (<span className="text-sm ml-2 text-disabled">Refresh</span>)}
+                        </div>
+                        {(confirmedNotifObject.isLoading || confirmedNotifObject.data.length < 1) && <NotifictionsSkeleton length={2} />}
+                        {!(confirmedNotifObject.isLoading || confirmedNotifObject.data.length < 1) && confirmedNotifObject.data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile)} />))}
                     </div>
-                    {isLoading && <NotifictionsSkeleton />}
-                    {!isLoading && data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile)} />))}
+                    <div className="h-1/2 w-full space-y-2 pb-5">
+                        <div className="inline-flex grow mb-2 justify-between items-center ">
+                            <span className="font-medium">Commandes</span>
+                        </div>
+                        {(notifObject.isLoading && notifObject.data.length < 1) && <NotifictionsSkeleton />}
+                        {!(notifObject.isLoading && notifObject.data.length < 1) && notifObject.data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile)} />))}
+                    </div>
                 </div>
             </div>
             {loading && (

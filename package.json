@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "The Pharma Express pharmacy desktop app.",
   "main": ".webpack/main",
-  "proxy": "http://localhost:3050/",
+  "proxy": "https://pharma-back.onrender.com/",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",

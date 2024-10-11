@@ -1,4 +1,4 @@
-export const HOST = 'http://localhost';
+export const HOST = 'https://pharma-back.onrender.com';
 
 export const PORT = '3050';
 

@@ -1,7 +1,7 @@
 import React from "react";
 
-const NotifictionsSkeleton = () => {
-    return (<>{Array.from({ length: 3 }, (_, index) => (
+const NotifictionsSkeleton = ({ length = 3 }) => {
+    return (<>{Array.from({ length: length }, (_, index) => (
         <div key={`${index}-notification-sk`} role="status" className="flex flex-row animate-pulse p-4 justify-start items-center bg-superClear  bg-opacity-50 rounded-xl shadow-lg ">
             <div className="flex w-1/6 p-4 justify-center items-center rounded-full bg-disabled dark:bg-lightShapes">
                 <svg className="w-full h-1/2 text-superClear dark:text-disabled" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">

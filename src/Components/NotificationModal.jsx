@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 
-const Modal = ({ isOpen, onClose, onRefuse, onAccept, selectedNotification }) => {
+const Modal = ({ isOpen, onClose, onRefuse, onAccept, onConfirm, selectedNotification }) => {
 
     if (!isOpen) return null;
+
+    let confirmType = false;
+
+    if (!onAccept) {
+        confirmType = true;
+    }
 
     const [isImageLoading, setImageLoading] = useState(true);
     const [error, setError] = useState("");
@@ -48,13 +54,19 @@ const Modal = ({ isOpen, onClose, onRefuse, onAccept, selectedNotification }) =>
                             Cancel
                         </button>
                         <button
-                            onClick={onRefuse}
+                            onClick={() => onRefuse(selectedNotification.idnotifications)}
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                         >
                             Refuse
                         </button>
                         <button
-                            onClick={() => onAccept(selectedNotification.idprescription)}
+                            onClick={() => {
+                                if (confirmType) {
+                                    onAccept(selectedNotification.idprescription);
+                                } else {
+                                    onConfirm(selectedNotification.id);
+                                }
+                            }}
                             className="bg-primary text-white px-4 py-2 rounded hover:bg-darkPrimary"
                         >
                             Accept

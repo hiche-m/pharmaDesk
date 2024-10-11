@@ -1,20 +1,20 @@
 import { HOST } from "../Utils/Parameters.jsx";
 import { useState } from 'react';
 
-const useConfirmRequest = () => {
+const useConfirmTransaction = () => {
 
     const [success, setSuccess] = useState(null);
 
-    const [isRequestLoading, setIsRequestLoading] = useState(false);
+    const [isTransactionLoading, setIsTransactionLoading] = useState(false);
 
     const [hasError, setHasError] = useState(null);
 
-    const confirmRequest = async (userId, perscriptionId, clientId) => {
+    const confirmTransaction = async (userId, perscriptionId) => {
 
-        setIsRequestLoading(true);
+        setIsTransactionLoading(true);
 
         try {
-            const res = await fetch(`${HOST}/api/Accept_prescription/${clientId}/${userId}/${perscriptionId}`, {
+            const res = await fetch(`${HOST}/api/Confirmation_prescription/${userId}/${perscriptionId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,10 +31,10 @@ const useConfirmRequest = () => {
             setHasError(error);
             console.log(error);
         }
-        setIsRequestLoading(false);
+        setIsTransactionLoading(false);
     }
 
-    return { confirmRequest, success, isRequestLoading, hasError };
+    return { confirmTransaction, success, isTransactionLoading, hasError };
 };
 
-export default useConfirmRequest;
+export default useConfirmTransaction;
