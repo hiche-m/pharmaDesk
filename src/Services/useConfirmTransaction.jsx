@@ -9,16 +9,23 @@ const useConfirmTransaction = () => {
 
     const [hasError, setHasError] = useState(null);
 
-    const confirmTransaction = async (userId, perscriptionId) => {
+    const confirmTransaction = async (userId, perscriptionId, clientId, formData) => {
 
         setIsTransactionLoading(true);
 
         try {
+
+            const body = {
+                idClient: clientId,
+                posiologies: formData,
+            };
+            console.log(body);
             const res = await fetch(`${HOST}/api/Confirmation_prescription/${userId}/${perscriptionId}`, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: body,
             });
 
             if (!res.ok) {

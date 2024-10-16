@@ -21,6 +21,8 @@ const Home = () => {
 
     const [selectedNot, setSelectedNot] = useState({});
 
+    const [confirmType, setConfirmType] = useState(0);
+
     useFetch(refresh);
 
     useFetchConfirmed(refresh);
@@ -75,18 +77,19 @@ const Home = () => {
         setModalOpen(false);
     };
 
-    const handleConfirm = async (pid) => {
-        await confirmTransactionObject.confirmTransaction(data.idpharma, pid);
+    const handleConfirm = async (pid, clientId, formData) => {
+        await confirmTransactionObject.confirmTransaction(data.idpharma, pid, clientId, formData);
         if (confirmTransactionObject.success) {
             alert("Request accepted.");
             setRefresh(previous => previous + 1);
         } else if (confirmTransactionObject.hasError) {
-            alert("An error has occured: " + hasError);
+            alert("An error has occured: " + confirmTransactionObject.hasError);
         }
         setModalOpen(false);
     };
 
-    const openNotification = (notification_data) => {
+    const openNotification = (notification_data, type) => {
+        setConfirmType(type);
         setSelectedNot(notification_data);
         handleOpenModal();
     };
@@ -116,6 +119,7 @@ const Home = () => {
             onAccept={handleAccept}
             onConfirm={handleConfirm}
             selectedNotification={selectedNot}
+            confirmType={confirmType}
         />
     </>
     );

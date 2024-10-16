@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import pfp4 from "../Assets/Images/pfp4.svg"
 import { recentActivity, typeColors } from "../Utils/Data/ActivityData.jsx";
 import ActivityTile from "./ActivityTile.jsx";
@@ -6,7 +6,7 @@ import NotificationTile from "./NotificationTile.jsx";
 import { useSelector } from "react-redux";
 import NotifictionsSkeleton from "../Skeletons/notifications_skeleton.jsx";
 
-const SideContent = ({ userData, handleRefresh = () => { }, acivity = recentActivity, openNotification = (notification_data) => { }, loading = false }) => {
+const SideContent = ({ userData, handleRefresh = () => { }, acivity = recentActivity, openNotification = (notification_data, type) => { }, loading = false }) => {
 
     const /* { isLoading, data, error, index } */notifObject = useSelector(state => state.notifications);
     const /* { isLoading, data, error, index } */confirmedNotifObject = useSelector(state => state.confirmedNotifications);
@@ -31,21 +31,22 @@ const SideContent = ({ userData, handleRefresh = () => { }, acivity = recentActi
                     )}
                 </div>
                 <div className="flex flex-col">
-                    <div className="h-1/2 w-full space-y-2 pb-5">
-                        <div className="inline-flex grow mb-2 justify-between items-center ">
+                    <div className="h-1/2 w-full space-y-2">
+                        <div className="inline-flex mb-2 justify-between items-center ">
                             <span className="font-medium">Commandes</span>
                             {!(notifObject.isLoading || confirmedNotifObject.isLoading) && (<span className="text-sm ml-2 text-textSecoundary cursor-pointer" onClick={() => handleRefresh()}>Refresh</span>)}
                             {(notifObject.isLoading || confirmedNotifObject.isLoading) && (<span className="text-sm ml-2 text-disabled">Refresh</span>)}
                         </div>
                         {(confirmedNotifObject.isLoading || confirmedNotifObject.data.length < 1) && <NotifictionsSkeleton length={2} />}
-                        {!(confirmedNotifObject.isLoading || confirmedNotifObject.data.length < 1) && confirmedNotifObject.data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile)} />))}
+                        {!(confirmedNotifObject.isLoading || confirmedNotifObject.data.length < 1) && confirmedNotifObject.data.map((tile, not_index) => (<NotificationTile key={`confirm-notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile, 1)} />))}
                     </div>
-                    <div className="h-1/2 w-full space-y-2 pb-5">
-                        <div className="inline-flex grow mb-2 justify-between items-center ">
-                            <span className="font-medium">Commandes</span>
+                    <div className="my-5" />
+                    <div className="h-1/2 w-full space-y-2">
+                        <div className="inline-flex mb-2">
+                            <span className="font-medium">Notifications</span>
                         </div>
-                        {(notifObject.isLoading && notifObject.data.length < 1) && <NotifictionsSkeleton />}
-                        {!(notifObject.isLoading && notifObject.data.length < 1) && notifObject.data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile)} />))}
+                        {(notifObject.isLoading || notifObject.data.length < 1) && <NotifictionsSkeleton />}
+                        {!(notifObject.isLoading || notifObject.data.length < 1) && notifObject.data.map((tile, not_index) => (<NotificationTile key={`notification-tile-${not_index}`} tile={tile} index={not_index} handleClick={() => openNotification(tile, 0)} />))}
                     </div>
                 </div>
             </div>
